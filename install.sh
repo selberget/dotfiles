@@ -8,14 +8,12 @@ echo "*** Installing dotfiles..."
 get_serperator
 
 echo "*** Checking if \$HOME exists..."
-get_seperator
 if [ -z $HOME ]; then
     echo "*** You got no \$HOME. :(";
     exit 1;
 else
-    echo "*** You got a \$HOME. \\o/"
+    echo "*** You got a \$HOME! \\o/"
 fi
-get_seperator
 
 DOTFILES=$HOME/.dotfiles
 DOTFILES_BACKUP=$HOME/dotfiles_backup
@@ -38,13 +36,14 @@ ln -s "$DOTFILES/zsh/.zshrc" "$HOME/.zshrc"
 # Installing Vim plugins with vundle.
 echo "*** Downloading Vundle to ~/.vim/bundle/Vundle.vim..."
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-echo "*** Vundle downloaded \\o/"
+echo "*** Vundle downloaded! \\o/"
 
 echo "*** Installing plugins listed in ~/.vimrc with Vundle..."
 vim +PluginInstall +qall
-echo "*** Vim plugin was installed \\o/"
+echo "*** Vim plugin was installed! \\o/"
 
 get_seperator
-echo "*** Zeh dotfiles are installed on the system \\o/\\o/\\o/\\o/\\o/\\o/"
+echo "*** Zeh dotfiles installation done!!! \\o/\\o/\\o/"
+get_seperator
 
 
