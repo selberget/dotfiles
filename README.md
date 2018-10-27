@@ -1,7 +1,6 @@
 # Dotfiles
 
 Repository for handling my dotfiles, with support for automatically install them on a new system. \
-Vim plugins listed in the .vimrc will be installed using Vundle, when executing the installation script.
 
 ## Installation
 
