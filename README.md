@@ -11,4 +11,5 @@ git clone git@github.com:selberget/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```
-**Note:** Vim plugins listed in the .vimrc will be installed using Vundle, when executing the installation script.
+**Note:** Vim plugins listed in the *.vimrc* will be installed automatically using *Vundle*, when executing the installation script.
+
