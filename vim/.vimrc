@@ -33,6 +33,8 @@ Plugin 'itchyny/lightline.vim'
 call vundle#end()           
 filetype plugin indent on    
 
+colorscheme dracula " colorscheme
+
 set number          " show line numbers
 set expandtab       " tab to spaces
 set cursorline      " highlight current line
@@ -93,5 +95,4 @@ if !has('gui_running')
     set t_Co=256
 endif
 
-" Color scheme
-colorscheme dracula 
+
