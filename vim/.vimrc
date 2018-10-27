@@ -27,19 +27,23 @@ Plugin 'luochen1990/rainbow'
 
 Plugin 'Raimondi/delimitMate'
 
+Plugin 'itchyny/lightline.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()           
 filetype plugin indent on    
 
 colorscheme dracula " color scheme
 
-set number     " show line numbers
-set expandtab  " tab to spaces
-set cursorline " highlight current line
+set number          " show line numbers
+set expandtab       " tab to spaces
+set cursorline      " highlight current line
 set shiftwidth=4
 set smarttab
 set autoindent
 set smartindent
+set laststatus=2    " To display lighline
+set noshowmode      " Get rid of -- INSERT -- at the bottom
 
 " Unmap the arrow keys
 no <left> <Nop>
@@ -81,3 +85,13 @@ let g:rainbow_active = 1 " 0 to enable it manually with toggle
 
 " DelimitMate
 let delimitMate_expand_cr = 1
+
+" Lightline
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+
+if !has('gui_running')
+    set t_Co=256
+endif
+
