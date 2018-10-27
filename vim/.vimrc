@@ -33,7 +33,7 @@ Plugin 'itchyny/lightline.vim'
 call vundle#end()           
 filetype plugin indent on    
 
-colorscheme dracula " colorscheme
+silent! colorscheme dracula " colorscheme, if not found no error message
 
 set number          " show line numbers
 set expandtab       " tab to spaces
