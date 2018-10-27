@@ -21,9 +21,9 @@ DOTFILES=$HOME/.dotfiles
 DOTFILES_BACKUP=$HOME/dotfiles_backup
 
 echo "*** Copy existing dotfiles to backup location => ~/dotfiles_backup..."
-mkdir -p $DOTFILES
-cp "$HOME/.vimrc" $DOTFILES
-cp "$HOME/.zshrc" $DOTFILES
+mkdir -p $DOTFILES_BACKUP
+cp "$HOME/.vimrc" $DOTFILES_BACKUP
+cp "$HOME/.zshrc" $DOTFILES_BACKUP
 
 echo "*** Removing existing dotfiles..."
 rm -rf \
