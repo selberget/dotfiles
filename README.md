@@ -1,6 +1,6 @@
 # Dotfiles
 
-Repository for handling my dotfiles, with support for automatically install them on a new system. \
+Repository for handling my dotfiles, with support for automatically install them on a new system.
 
 ## Installation
 
