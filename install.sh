@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 get_seperator() {
-    echo "====================================="
+    echo "==============================================="
 }
 
+echo "Running ./install.sh..."
+get_seperator
 echo "*** Installing dotfiles..."
-get_serperator
+get_seperator
 
 echo "*** Checking if \$HOME exists..."
 if [ -z $HOME ]; then
@@ -40,10 +42,10 @@ echo "*** Vundle downloaded! \\o/"
 
 echo "*** Installing plugins listed in ~/.vimrc with Vundle..."
 vim +PluginInstall +qall
-echo "*** Vim plugin was installed! \\o/"
+echo "*** Vim plugins was installed! \\o/"
 
 get_seperator
-echo "*** Zeh dotfiles installation done!!! \\o/\\o/\\o/"
+echo "*** Installation done!!! \\o/\\o/\\o/"
 get_seperator
 
 
