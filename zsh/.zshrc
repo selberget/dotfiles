@@ -100,10 +100,4 @@ alias rzsh='source ~/.zshrc'
 # Weather
 alias weather='curl -4 http://wttr.in/Karlstad'
 
-# Golang
-export GOPATH=$HOME/Code/go
-
-# Add to PATH
-PATH=/home/johan/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/johan/go/bin
-
 export TERM=xterm-256color 
