@@ -53,6 +53,7 @@ get_seperator
 mkdir -p $DOTFILES_BACKUP
 backup_dotfile ".vimrc" "$DOTFILES_BACKUP"
 backup_dotfile ".zshrc" "$DOTFILES_BACKUP"
+backup_dotfile ".tmux.conf" "$DOTFILES_BACKUP"
 get_seperator
 
 echo "*** Removing existing dotfiles..."
@@ -60,12 +61,14 @@ get_seperator
 remove_dotfile "$HOME/.vim"
 remove_dotfile "$HOME/.vimrc"
 remove_dotfile "$HOME/.zshrc"
+remove_dotfile "$HOME/.tmux.conf"
 get_seperator
 
 echo "*** Creating symlinks from ~/.dotfiles to ~/..."
 get_seperator
 create_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
 create_symlink "$DOTFILES/zsh/.zshrc" "$HOME/.zshrc"
+create_symlink "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
 get_seperator
 
 # Installing Vim plugins with vundle.
