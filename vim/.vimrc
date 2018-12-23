@@ -17,9 +17,9 @@ Plugin 'tpope/vim-surround'
 
 Plugin 'scrooloose/nerdcommenter'
 
-Plugin 'dracula/vim'
+Plugin 'morhetz/gruvbox'
 
-Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'shinchu/lightline-gruvbox.vim'
 
 Plugin 'godlygeek/tabular'
 
@@ -29,11 +29,15 @@ Plugin 'Raimondi/delimitMate'
 
 Plugin 'itchyny/lightline.vim'
 
+Plugin 'benmills/vimux'
+
 " All of your Plugins must be added before the following line
 call vundle#end()           
 filetype plugin indent on    
 
-silent! colorscheme dracula " colorscheme, if not found no error message
+silent! colorscheme gruvbox " colorscheme, if not found no error message
+let g:gruvbox_contrast_dark='soft'
+set bg=dark " Setting dark mode
 
 set number          " show line numbers
 set expandtab       " tab to spaces
@@ -87,12 +91,30 @@ let g:rainbow_active = 1 " 0 to enable it manually with toggle
 let delimitMate_expand_cr = 1
 
 " Lightline
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ }
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
 
 if !has('gui_running')
     set t_Co=256
 endif
 
+" Vimux
+" Open command prompt with '\vp'
+map <Leader>vp :VimuxPromptCommand<CR>
+" Run last command executed by VimuxRunCommand
+map <Leader>vl :VimuxRunLastCommand<CR>
+" Inspect runner pane
+map <Leader>vi :VimuxInspectRunner<CR>
+
+" Spits
+
+" Split window vertically
+nnoremap <C-W><bar> <C-W>v
+nnoremap <C-W>- <C-W>s
+
+" Easier split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
