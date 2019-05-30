@@ -22,6 +22,11 @@ set -o pipefail
 readonly __script_name=$(basename "${0}")
 readonly __script_dir=$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 
+readonly __head_action="\u226B"
+readonly __add_action="+"
+readonly __action_step="\u21AA"
+readonly __action_completed="\u2713"
+
 declare -Ar __dotfiles=(
     ["i3"]=".config/i3"
     ["rofi"]=".config/rofi"
@@ -35,115 +40,101 @@ declare -Ar __dotfiles=(
 # [Help functions]
 
 print_seperator() {
-    local length=70
+    local length=72
     for i in $(seq 1 "${length}"); do
         printf "\u2501"
     done
     printf "\n"
 }
 
-backup_dotfiles() {
-    local dotfiles_backup_dir="${HOME}/dotfiles.bak"
-   
-    printf "Backing up old dotfiles...\n"
-
+print_info() {
     print_seperator
-
-    mkdir -p "${dotfiles_backup_dir}"
-
-    for dotfile_path in "${__dotfiles[@]}"; do
-        if [ -f "${HOME}/${dotfile_path}" ] ; then
-            printf "Dotfile %s exists!\n" "${dotfile_path}"
-            printf " \u21AA Copying %s to %s...\n" "${HOME}/${dotfile_path}" "${dotfiles_backup_dir}" 
-            cp "${HOME}/${dotfile_path}" "${dotfiles_backup_dir}"
-        elif [ -d "${HOME}/${dotfile_path}" ]; then
-            printf "Dotfiles directory %s exists!\n" "${dotfile_path}"
-            printf " \u21AA Copying %s to %s...\n" "${HOME}/${dotfile_path}" "${dotfiles_backup_dir}" 
-            cp -r "${HOME}/${dotfile_path}" "${dotfiles_backup_dir}"
-        else
-            printf "%s doesn't exist...\n" "${dotfile_path}"
-            printf " \u21AA No need to backup!\n"
-        fi
-    done
-
+    printf "\u226B Info\n"
+    print_seperator
+    printf "\u2022 This is a installation script for installing my dotfiles on a system.\n"
+    printf "\u2022 The dotfiles will be stored in the directory which you're running\n"
+    printf "  the script from (%s).\n" "${__script_dir}"
+    printf "\u2022 Symlinks are created where each dotfile is usually stored.\n"
     print_seperator
 }
-    #FILE=$1
-    #DIR=$2
-    #if [ -f "$HOME/$FILE" ] ; then
-        #echo "$FILE exists on the system: copying $FILE to ~/dotfiles_backup..."
-        #cp "$HOME/$FILE" $DIR
-    #else
-        #echo "$FILE does not exist on the system: no need to backup..."
-    #fi
 
-remove_dotfile() {
-    FILE=$1
-    if [ -f "$FILE" ] || [ -d "$FILE" ] ; then
-        echo "$FILE exists on the system: deleting $FILE..."
-        rm -rf "$FILE"
+input_prompt() {
+    while true; do
+        read -p "Do you still wish to run the script? " response
+        case "${response}" in
+            [Yy]* ) printf "Proceeding with the installation! \o/\n"; break;;
+            [Nn]* ) printf "bye :(\n"; exit;;
+        esac
+    done
+    print_seperator
+}
+
+backup_dotfile() {
+    local dotfile_path="${1}"
+    local dotfiles_backup_dir="${HOME}/dotfiles.bak"
+
+    printf "  ${__action_step} Backing up %s\n" $(basename "${dotfile_path}")
+
+    if [ -f "${dotfile_path}" ] || [ -d "${dotfile_path}" ]; then
+        printf "    ${__action_step} %s exists on the system\n" $(basename "${dotfile_path}")
+        printf "      ${__action_step} Copying %s to %s\n" $(basename "${dotfile_path}") "${dotfiles_backup_dir}" 
+        cp -r "${dotfile_path}" "${dotfiles_backup_dir}"
+        printf "      ${__action_step} Removing old %s from the system\n" $(basename "${dotfile_path}")
+        rm -rf "${dotfile_path}"
     else
-        echo "$FILE does not exist on the system: no need to delete.."
+        printf "    ${__action_step} %s doesn't exist\n" $(basename "${dotfile_path}")
+        printf "      ${__action_step} No need to backup\n"
     fi
 }
 
 create_symlink() {
-    FILE=$1
-    LINK=$2
-    echo "creating symlink from $FILE to $LINK..."
-    ln -s "$FILE" "$LINK"
+    local file_path="${1}"
+    local link_path="${2}"
+    printf "  ${__action_step} Creating symlink\n"
+    printf "    ${__action_step} from \t%s\n" "${file_path}" 
+    printf "    ${__action_step} to \t%s\n" "${link_path}"
+    ln -s "${file_path}" "${link_path}"
+}
+
+install_dotfiles() {
+    printf "${__head_action} Installing dotfiles\n"
+
+    mkdir -p "${HOME}/dotfiles.bak"
+
+    for dotfile in "${!__dotfiles[@]}"; do
+        print_seperator
+        printf "${__add_action} Adding %s\n" $(basename "${dotfile}")
+        backup_dotfile "${HOME}/${__dotfiles[$dotfile]}"
+        create_symlink "${__script_dir}/${dotfile}" "${HOME}/${__dotfiles[$dotfile]}"
+    done
+
+    printf "\n${__action_completed} Dotfiles was installed \\o/\n"
+    print_seperator
+}
+
+install_vim_plugins() {
+    local vundle_path="${HOME}/.vim/bundle/Vundle.vim"
+    printf "${__head_action} Installing Vim plugins\n"
+    print_seperator
+    printf "${__add_action} Install Vim plugins listed in .vimrc with Vundle\n"
+
+    printf "  ${__action_step} Download Vundle to %s\n" "${vundle_path}"
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+    printf "  ${__action_step} Installing plugins listed in ~/.vimrc with Vundle\n"
+    vim +PluginInstall +qall
+
+    printf "\n${__action_completed} Vim plugins was installed! \\o/\n"
+    print_seperator
 }
 
 
 main() {
-    printf "Running %s...\n" "${__script_name}"
-    printf "dir: %s\n" "${__script_dir}"
-    backup_dotfiles
-
+    print_info
+    input_prompt
+    install_dotfiles
+    install_vim_plugins
+    printf "${__action_completed} Installation done \\o/\\o/\\o/\n"
 }
 
 main "${@}"
-
-
-
-#DOTFILES=$HOME/.dotfiles
-#DOTFILES_BACKUP=$HOME/dotfiles_backup
-
-#echo "*** Copy existing dotfiles to backup location => ~/dotfiles_backup..."
-#get_seperator
-#mkdir -p $DOTFILES_BACKUP
-#backup_dotfile ".vimrc" "$DOTFILES_BACKUP"
-#backup_dotfile ".zshrc" "$DOTFILES_BACKUP"
-#backup_dotfile ".tmux.conf" "$DOTFILES_BACKUP"
-#get_seperator
-
-#echo "*** Removing existing dotfiles..."
-#get_seperator
-#remove_dotfile "$HOME/.vim"
-#remove_dotfile "$HOME/.vimrc"
-#remove_dotfile "$HOME/.zshrc"
-#remove_dotfile "$HOME/.tmux.conf"
-#get_seperator
-
-#echo "*** Creating symlinks from ~/.dotfiles to ~/..."
-#get_seperator
-#create_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
-#create_symlink "$DOTFILES/zsh/.zshrc" "$HOME/.zshrc"
-#create_symlink "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
-#get_seperator
-
-## Installing Vim plugins with vundle.
-#echo "*** Downloading Vundle to ~/.vim/bundle/Vundle.vim..."
-#get_seperator
-#git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-#get_seperator
-
-#echo "*** Installing plugins listed in ~/.vimrc with Vundle..."
-#vim +PluginInstall +qall
-#echo "*** Vim plugins was installed! \\o/"
-
-#get_seperator
-#echo "*** Installation done!!! \\o/\\o/\\o/"
-#get_seperator
-
-
