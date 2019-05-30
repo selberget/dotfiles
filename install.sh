@@ -25,6 +25,7 @@ readonly __job_completed="\u2713"
 readonly __info_message="\u2022"
 readonly __seperator="\u2501"
 
+# [path of dotfile in repo]=[path to dotfile on system]
 declare -Ar __dotfiles=(
     ["i3"]=".config/i3"
     ["rofi"]=".config/rofi"
