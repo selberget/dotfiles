@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-
-
 # [Settings]
 
 # exit on error, append '|| true if you expect error
