@@ -25,16 +25,6 @@ readonly __job_completed="\u2713"
 readonly __info_message="\u2022"
 readonly __seperator="\u2501"
 
-# [path of dotfile in repo]=[path to dotfile on system]
-declare -Ar __dotfiles=(
-    ["i3"]=".config/i3"
-    ["rofi"]=".config/rofi"
-    ["vim/.vimrc"]=".vimrc"
-    ["tmux/.tmux.conf"]=".tmux.conf"
-    ["zsh/.zprofile"]=".zprofile"
-    ["zsh/.zshrc"]=".zshrc"
-    ["xresources/.Xresources"]=".Xresources"
-)
 
 # [Help functions]
 
@@ -114,6 +104,17 @@ install_dotfiles() {
     printf "${__job_symbol} Installing dotfiles\n"
 
     mkdir -p "${__dotfiles_backup_dir}"
+
+    # [path of dotfile in repo]=[path to dotfile on system]
+    declare -Ar __dotfiles=(
+        ["i3"]=".config/i3"
+        ["rofi"]=".config/rofi"
+        ["vim/.vimrc"]=".vimrc"
+        ["tmux/.tmux.conf"]=".tmux.conf"
+        ["zsh/.zprofile"]=".zprofile"
+        ["zsh/.zshrc"]=".zshrc"
+        ["xresources/.Xresources"]=".Xresources"
+    )
 
     for dotfile in "${!__dotfiles[@]}"; do
         print_seperator
