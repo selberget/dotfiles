@@ -31,13 +31,15 @@ Plugin 'itchyny/lightline.vim'
 
 Plugin 'benmills/vimux'
 
+Plugin 'dracula/vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()           
 filetype plugin indent on    
 
-silent! colorscheme gruvbox " colorscheme, if not found no error message
-let g:gruvbox_contrast_dark='soft'
-set bg=dark " Setting dark mode
+let g:dracula_colorterm = 0
+colorscheme dracula
+"highlight Normal ctermbg=NONE
 
 set number          " show line numbers
 set expandtab       " tab to spaces
@@ -92,7 +94,7 @@ let delimitMate_expand_cr = 1
 
 " Lightline
 let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.colorscheme = 'wombat'
 
 if !has('gui_running')
     set t_Co=256
