@@ -19,7 +19,7 @@ readonly __dotfiles_backup_dir="${HOME}/dotfiles.bak"
 
 # unicode symbols
 readonly __head_action="\u226B"
-readonly __add_action="+"
+readonly __add_action="\u2300"
 readonly __action_step="\u21AA"
 readonly __action_completed="\u2713"
 readonly __info_message="\u2022"
@@ -61,12 +61,25 @@ print_info() {
 
 input_prompt() {
     while true; do
+        printf "${__add_action} "
         read -p "Do you still wish to run the script? " response
         case "${response}" in
-            [Yy]* ) printf "Proceeding with the installation! \\o/\n"; break;;
-            [Nn]* ) printf "bye :(\n"; exit;;
+            [Yy]* ) printf "  ${__action_step} Proceeding with the installation! \\o/\n"; break;;
+            [Nn]* ) printf "  ${__action_step} bye :(\n"; exit;;
         esac
     done
+}
+
+check_if_home_is_set() {
+    printf "${__add_action} Checking if \$HOME is set\n"
+    if [ -z "${HOME}" ]; then
+        printf "  ${__action_step} You got no \$HOME :(\n"
+        printf "    ${__action_step} \$HOME has to be set to your home directory for the script\n" 
+        printf "      to be able to run properly\n"
+        exit 1
+    else
+        printf "  ${__action_step} You got a \$HOME \\o/\n"
+    fi
     print_seperator
 }
 
@@ -132,6 +145,7 @@ install_vim_plugins() {
 main() {
     print_info
     input_prompt
+    check_if_home_is_set
     install_dotfiles
     install_vim_plugins
     printf "${__action_completed} Installation done \\o/\\o/\\o/\n"
