@@ -28,6 +28,7 @@ readonly __add_action="+"
 readonly __action_step="\u21AA"
 readonly __action_completed="\u2713"
 readonly __info_message="\u2022"
+readonly __seperator="\u2501"
 
 declare -Ar __dotfiles=(
     ["i3"]=".config/i3"
@@ -44,7 +45,7 @@ declare -Ar __dotfiles=(
 print_seperator() {
     local length=72
     for i in $(seq 1 "${length}"); do
-        printf "\u2501"
+        printf "${__seperator}"
     done
     printf "\n"
 }
@@ -67,7 +68,7 @@ input_prompt() {
     while true; do
         read -p "Do you still wish to run the script? " response
         case "${response}" in
-            [Yy]* ) printf "Proceeding with the installation! \o/\n"; break;;
+            [Yy]* ) printf "Proceeding with the installation! \\o/\n"; break;;
             [Nn]* ) printf "bye :(\n"; exit;;
         esac
     done
@@ -129,7 +130,7 @@ install_vim_plugins() {
     printf "  ${__action_step} Installing plugins listed in ~/.vimrc with Vundle\n"
     vim +PluginInstall +qall
 
-    printf "\n${__action_completed} Vim plugins was installed! \\o/\n"
+    printf "\n${__action_completed} Vim plugins was installed \\o/\n"
     print_seperator
 }
 
