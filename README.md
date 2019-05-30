@@ -12,3 +12,7 @@ cd ~/.dotfiles
 ```
 **Note:** Vim plugins listed in the *.vimrc* will be installed automatically using *Vundle*, when executing the installation script.
 
+### Sources used for writing bash script
+[1] http://bash3boilerplate.sh/
+[2] https://github.com/bertvv/dotfiles/blob/master/.vim/templates/sh
+[3] https://github.com/ralish/bash-script-template/blob/stable/script.sh

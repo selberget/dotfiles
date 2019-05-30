@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Sources
-#http://bash3boilerplate.sh/
-#https://github.com/bertvv/dotfiles/blob/master/.vim/templates/sh
-#https://github.com/ralish/bash-script-template/blob/stable/script.sh
 
 
 # [Settings]
