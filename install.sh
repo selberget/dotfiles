@@ -15,6 +15,7 @@ set -o pipefail
 
 readonly __script_name=$(basename "${0}")
 readonly __script_dir=$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+readonly __dotfiles_backup_dir="${HOME}/dotfiles.bak"
 
 # unicode symbols
 readonly __head_action="\u226B"
@@ -71,14 +72,13 @@ input_prompt() {
 
 backup_dotfile() {
     local dotfile_path="${1}"
-    local dotfiles_backup_dir="${HOME}/dotfiles.bak"
 
     printf "  ${__action_step} Backing up %s\n" $(basename "${dotfile_path}")
 
     if [ -f "${dotfile_path}" ] || [ -d "${dotfile_path}" ]; then
         printf "    ${__action_step} %s exists on the system\n" $(basename "${dotfile_path}")
-        printf "      ${__action_step} Copying %s to %s\n" $(basename "${dotfile_path}") "${dotfiles_backup_dir}" 
-        cp -r "${dotfile_path}" "${dotfiles_backup_dir}"
+        printf "      ${__action_step} Copying %s to %s\n" $(basename "${dotfile_path}") "${__dotfiles_backup_dir}" 
+        cp -r "${dotfile_path}" "${__dotfiles_backup_dir}"
         printf "      ${__action_step} Removing old %s from the system\n" $(basename "${dotfile_path}")
         rm -rf "${dotfile_path}"
     else
@@ -99,7 +99,7 @@ create_symlink() {
 install_dotfiles() {
     printf "${__head_action} Installing dotfiles\n"
 
-    mkdir -p "${HOME}/dotfiles.bak"
+    mkdir -p "${__dotfiles_backup_dir}"
 
     for dotfile in "${!__dotfiles[@]}"; do
         print_seperator
