@@ -22,10 +22,12 @@ set -o pipefail
 readonly __script_name=$(basename "${0}")
 readonly __script_dir=$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 
+# unicode symbols
 readonly __head_action="\u226B"
 readonly __add_action="+"
 readonly __action_step="\u21AA"
 readonly __action_completed="\u2713"
+readonly __info_message="\u2022"
 
 declare -Ar __dotfiles=(
     ["i3"]=".config/i3"
@@ -49,12 +51,15 @@ print_seperator() {
 
 print_info() {
     print_seperator
-    printf "\u226B Info\n"
+    printf "${__head_action} Info\n"
     print_seperator
-    printf "\u2022 This is a installation script for installing my dotfiles on a system.\n"
-    printf "\u2022 The dotfiles will be stored in the directory which you're running\n"
+    printf "${__info_message} This is an installation script for installing my dotfiles on a system.\n"
+    printf "${__info_message} The dotfiles will be stored in the directory which you're running\n"
     printf "  the script from (%s).\n" "${__script_dir}"
-    printf "\u2022 Symlinks are created where each dotfile is usually stored.\n"
+    printf "${__info_message} Symlinks are created where each dotfile is usually stored.\n"
+    printf "${__info_message} Existing dotfiles will, if they exist, be backed up to %s.\n"
+    printf "${__info_message} After the dotfiles are installed on the system, Vundle will be used \n"
+    printf "  to install Vim plugins listed in .vimrc.\n"
     print_seperator
 }
 
