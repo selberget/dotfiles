@@ -25,7 +25,6 @@ readonly __job_completed="\u2713"
 readonly __info_message="\u2022"
 readonly __seperator="\u2501"
 
-
 # [Help functions]
 
 print_seperator() {
@@ -114,6 +113,7 @@ install_dotfiles() {
         ["zsh/.zprofile"]=".zprofile"
         ["zsh/.zshrc"]=".zshrc"
         ["xresources/.Xresources"]=".Xresources"
+        ["xresources/.xinitrc"]=".xinitrc"
     )
 
     for dotfile in "${!__dotfiles[@]}"; do

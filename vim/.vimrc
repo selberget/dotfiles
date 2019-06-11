@@ -81,7 +81,7 @@ let g:NERDTreeDirArrowCollapsible = '-'
 map <C-n> :NERDTreeToggle<CR>
 
  "NERDCommenter
-map <C-k> <plug>NERDCommenterToggle
+ " map <C-k> <plug>NERDCommenterToggle
 
 " Easy Motion
 map <C-m> <Plug>(easymotion-bd-f)
