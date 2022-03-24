@@ -6,8 +6,6 @@ set -o pipefail
 
 readonly OK_ICON="\U2705"
 readonly ERROR_ICON="\U274C"
-#readonly REQUIRED_ICON="\U1F6AB"
-readonly REQUIRED_ICON="\U26D4"
 
 readonly script_name=$(basename "${0}")
 
