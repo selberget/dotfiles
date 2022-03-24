@@ -1,0 +1,79 @@
+#! /usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly OK_ICON="\U2705"
+readonly ERROR_ICON="\U274C"
+#readonly REQUIRED_ICON="\U1F6AB"
+readonly REQUIRED_ICON="\U26D4"
+
+readonly script_name=$(basename "${0}")
+
+
+info() {
+  printf "${OK_ICON} %s\n" "${*}"
+}
+
+error() {
+  printf "${ERROR_ICON} %s\n" "${*}" 1>&2
+}
+
+usage() {
+  cat <<HELP_USAGE
+usage: "${script_name}" <host:port>
+    -h  Print help (this message) and exit 
+HELP_USAGE
+}
+
+help_wanted() {
+  [ "$1" == '-h' ] || [ "$1" == '--help' ] 
+}
+
+check_requirements() {
+  local openssl_command="openssl"
+
+  if ! command -v "${openssl_command}" &> /dev/null
+  then
+    printf "${openssl_command} is required to be installed\n"
+    exit 1
+  fi
+}
+
+print_cert_expiry_time() {
+    local expiry_time=$(true | openssl s_client -connect ${endpoint} 2>/dev/null | openssl x509 -noout -enddate | cut -d "=" -f2)
+
+    info "Certificate is valid, expires ${expiry_time}"
+}
+
+check_args() {
+  if [ "$#" -ne "1" ]; then
+    usage
+    exit 1
+  fi
+
+  if help_wanted "${@}"; then
+    usage
+    exit 0
+  fi
+}
+
+check_certificate() {
+  local endpoint="${1}"
+
+  if true | openssl s_client -connect "${endpoint}" 2>/dev/null | openssl x509 -noout -checkend 0 &>/dev/null; then
+    print_cert_expiry_time
+  else
+    error "Certificate has expired"
+  fi
+}
+
+main() {
+  check_requirements
+  check_args "${@}"
+  check_certificate "${1}"
+}
+
+main "${@}"
+
