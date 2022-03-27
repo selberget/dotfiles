@@ -1,0 +1,6 @@
+[pager]
+	branch = false
+[credential]
+	helper = cache
+[pull]
+	rebase = true
