@@ -86,6 +86,7 @@ map <S-ScrollWheelDown> <nop>
 " NERDTree
 let g:NERDTreeDirArrowExpandable  = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
+let g:NERDTreeShowHidden=1
 map <C-n> :NERDTreeToggle<CR>
 
 " NERDCommenter
