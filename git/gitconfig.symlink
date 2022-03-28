@@ -4,6 +4,3 @@
 	helper = cache
 [pull]
 	rebase = true
-[user]
-	name = Johan Selberg
-	email = johan.selberg@gmail.com
