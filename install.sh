@@ -61,9 +61,9 @@ input_prompt() {
 }
 
 check_if_home_is_set() {
-    printf "${__job_task_symbol} Checking if \$HOME is set\n"
+    printf "Checking if \$HOME is set\n"
     if [ -z "${HOME}" ]; then
-        printf "  You got no \$HOME ${__job_error}\n"
+        printf "  ${__job_task_step_symbol} You got no \$HOME ${__job_error}\n"
         printf "  \$HOME has to be set to your home directory for the script to be able to run properly\n"
         exit 1
     else
@@ -74,20 +74,20 @@ check_if_home_is_set() {
 
 backup_dotfile() {
     local dotfile_name="${1}"
-    local dotfile_path="${HOME}/${1}"
+    local dotfile_path="${HOME}/${dotfile_name}"
     local backup_dotfile_path="${__dotfiles_backup_dir}/${dotfile_name}.bak"
 
-    printf "  ${__job_task_step_symbol} Backing up %s\n" "${dotfile_name}"
+    printf "Backing up %s\n" "${dotfile_name}"
 
-    if [ -f "${backed_up_dotfile_path}" ] ; then
-        printf "    ${__job_task_step_symbol} %s exists on the system\n" "${dotfile_name}"
-        printf "      ${__job_task_step_symbol} Copying %s to %s\n" "${dotfile_name}" "${__dotfiles_backup_dir}" 
+    if [ -f "${dotfile_path}" ] ; then
+        printf "  ${__job_task_step_symbol} %s exists on the system\n" "${dotfile_name}"
+        printf "  ${__job_task_step_symbol} Copying %s to %s\n" "${dotfile_name}" "${__dotfiles_backup_dir}" 
         cp  "${dotfile_path}" "${backup_dotfile_path}"
-        printf "      ${__job_task_step_symbol} Removing old %s from the system\n" "${dotfile_name}"
+        printf "  ${__job_task_step_symbol} Removing old %s from the system\n" "${dotfile_name}"
         rm -f "${dotfile_path}"
     else
-        printf "    ${__job_task_step_symbol} %s doesn't exist\n" "${dotfile_name}"
-        printf "      ${__job_task_step_symbol} No need to backup\n"
+        printf "  ${__job_task_step_symbol} %s doesn't exist\n" "${dotfile_name}"
+        printf "  ${__job_task_step_symbol} No need to backup\n"
     fi
 }
 
@@ -95,35 +95,33 @@ backup_backuped_dotfile() {
     local filename="${1}.bak"
     local backed_up_dotfile_path="${__dotfiles_backup_dir}/${filename}"
 
-    printf "  ${__job_task_step_symbol} Backing up %s\n" "${filename}"    
+    printf "Backing up previous backup %s\n" "${filename}"    
     if [ -f "${backed_up_dotfile_path}" ]; then
-        printf "    ${__job_task_step_symbol} Copying %s to %s\n" "${backed_up_dotfile_path}" "${backed_up_dotfile_path}.bak" 
+        printf "  ${__job_task_step_symbol} Copying %s to %s\n" "${backed_up_dotfile_path}" "${backed_up_dotfile_path}.bak" 
         cp "${backed_up_dotfile_path}" "${backed_up_dotfile_path}.bak"
     else
-        printf "    ${__job_task_step_symbol} Backed up file %s doesn't exist, no need to backup\n" "${backed_up_dotfile_path}"
+        printf "  ${__job_task_step_symbol} Backed up file %s doesn't exist, no need to backup\n" "${backed_up_dotfile_path}"
     fi
 }
 
 create_symlink() {
     local file_path="${1}"
     local link_path="${2}"
-    printf "  ${__job_task_step_symbol} Creating symlink\n"
-    printf "    ${__job_task_step_symbol} from \t%s\n" "${file_path}" 
-    printf "    ${__job_task_step_symbol} to \t%s\n" "${link_path}"
+    printf "Creating symlink from %s to %s\n" "${file_path}" "${link_path}"
     ln -s "${file_path}" "${link_path}"
 }
 
 install_dotfiles() {
     printf "Installing dotfiles...\n"
     
-    printf "Creating backup directory for dotfiles %s" "${__dotfiles_backup_dir}"
+    printf "Creating backup directory for dotfiles %s\n" "${__dotfiles_backup_dir}"
     mkdir -p "${__dotfiles_backup_dir}"
 
     # read dotfiles paths
     typeset -ar dotfiles=($__script_dir/**/*.symlink)
     local dotfile_name
 
-    for dotfile in $dotfiles
+    for dotfile in "${dotfiles[@]}"
     do
         dotfile_name=".$(basename ${dotfile} '.symlink')" 
         backup_backuped_dotfile "${dotfile_name}"
@@ -135,12 +133,49 @@ install_dotfiles() {
     print_seperator
 }
 
+install_scripts() {
+    local script_source="${__script_dir}/bin"
+    local script_destination="${HOME}/bin"
+
+    printf "Installing scripts from bin/...\n"
+    if [ ! -d $script_destination ]; then
+        printf "Creating directory for local scripts at %s\n" "${script_destination}"
+        mkdir -p ${script_destination}
+    fi
+
+    printf "Following scripts will be installed:\n"
+    for script in "${script_source}/*"
+    do
+        printf "${__info_message} $(basename $script)\n"
+    done
+
+    printf "Copying scripts from %s to %s\n" "${script_source}" "${script_destination}"
+    cp -a "${script_source}/." "${script_destination}"
+
+    printf "\nScripts installed ${__job_completed}\n"
+    print_seperator
+}
+
+run_installation_scripts() {
+
+    for install_script in ${__script_dir}/**/install.sh
+    do
+        printf "Running installation script %s\n" "${install_script}"
+        ${install_script}
+    done
+
+    printf "\nInstallation scripts executed ${__job_completed}\n"
+    print_seperator
+}
+
 main() {
     print_info
     input_prompt
     check_if_home_is_set
     install_dotfiles
-    printf "${__job_completed} Installation done\n"
+    install_scripts
+    run_installation_scripts
+    printf "Installation done ${__job_completed}\n"
 }
 
 main "${@}"
