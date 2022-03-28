@@ -157,7 +157,6 @@ install_scripts() {
 }
 
 run_installation_scripts() {
-
     for install_script in ${__script_dir}/**/install.sh
     do
         printf "Running installation script %s\n" "${install_script}"
@@ -168,7 +167,15 @@ run_installation_scripts() {
     print_seperator
 }
 
+check_requirements() {
+    if [[ "${HOME}/.dotfiles" != "${__script_dir}" ]]; then
+        printf "Repository is required to be located under %s, won't work with current location at %s\n" "${HOME}/.dotfiles" "${__script_dir}"
+        exit 1
+    fi
+}
+
 main() {
+    check_requirements
     print_info
     input_prompt
     check_if_home_is_set
