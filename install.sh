@@ -73,18 +73,20 @@ check_if_home_is_set() {
 }
 
 backup_dotfile() {
-    local dotfile_path="${1}"
+    local dotfile_name="${1}"
+    local dotfile_path="${HOME}/${1}"
+    local backup_dotfile_path="${__dotfiles_backup_dir}/${dotfile_name}.bak"
 
-    printf "  ${__job_task_step_symbol} Backing up %s\n" $(basename "${dotfile_path}")
+    printf "  ${__job_task_step_symbol} Backing up %s\n" "${dotfile_name}"
 
-    if [ -f "${dotfile_path}" ] || [ -d "${dotfile_path}" ]; then
-        printf "    ${__job_task_step_symbol} %s exists on the system\n" $(basename "${dotfile_path}")
-        printf "      ${__job_task_step_symbol} Copying %s to %s\n" $(basename "${dotfile_path}") "${__dotfiles_backup_dir}" 
-        cp -r "${dotfile_path}" "${__dotfiles_backup_dir}"
-        printf "      ${__job_task_step_symbol} Removing old %s from the system\n" $(basename "${dotfile_path}")
-        rm -rf "${dotfile_path}"
+    if [ -f "${backed_up_dotfile_path}" ] ; then
+        printf "    ${__job_task_step_symbol} %s exists on the system\n" "${dotfile_name}"
+        printf "      ${__job_task_step_symbol} Copying %s to %s\n" "${dotfile_name}" "${__dotfiles_backup_dir}" 
+        cp  "${dotfile_path}" "${backup_dotfile_path}"
+        printf "      ${__job_task_step_symbol} Removing old %s from the system\n" "${dotfile_name}"
+        rm -f "${dotfile_path}"
     else
-        printf "    ${__job_task_step_symbol} %s doesn't exist\n" $(basename "${dotfile_path}")
+        printf "    ${__job_task_step_symbol} %s doesn't exist\n" "${dotfile_name}"
         printf "      ${__job_task_step_symbol} No need to backup\n"
     fi
 }
@@ -113,34 +115,21 @@ create_symlink() {
 
 install_dotfiles() {
     printf "Installing dotfiles...\n"
-
     
-    # read dotfiles from .dotfiles/**/*.symlink
+    printf "Creating backup directory for dotfiles %s" "${__dotfiles_backup_dir}"
+    mkdir -p "${__dotfiles_backup_dir}"
+
+    # read dotfiles paths
     typeset -ar dotfiles=($__script_dir/**/*.symlink)
+    local dotfile_name
 
-    if [ -d "${__dotfiles_backup_dir}" ]; then
-        for dotfile in $dotfiles
-        do
-            backup_backuped_dotfile ".$(basename ${dotfile} '.symlink')" 
-        done
-    else
-        printf "Creating backup directory for dotfiles %s" "${__dotfiles_backup_dir}"
-        mkdir -p "${__dotfiles_backup_dir}"
-    fi
-
-    # if backup directory exist backup existing backed up files
-    # backup .bak files to .bak.bak files
-
-    # else create backup directory
-
-    # backup current dotfiles to backup directory
-
-    #for dotfile in "${!__dotfiles[@]}"; do
-        #print_seperator
-        #printf "${__job_task_symbol} Adding %s\n" $(basename "${dotfile}")
-        #backup_dotfile "${HOME}/${__dotfiles[$dotfile]}"
-        #create_symlink "${__script_dir}/${dotfile}" "${HOME}/${__dotfiles[$dotfile]}"
-    #done
+    for dotfile in $dotfiles
+    do
+        dotfile_name=".$(basename ${dotfile} '.symlink')" 
+        backup_backuped_dotfile "${dotfile_name}"
+        backup_dotfile "${dotfile_name}"
+        create_symlink "${dotfile}" "${HOME}/${dotfile_name}"
+    done
 
     printf "\nDotfiles installed ${__job_completed}\n"
     print_seperator
