@@ -169,7 +169,7 @@ run_installation_scripts() {
 
 check_requirements() {
     if [[ "${HOME}/.dotfiles" != "${__script_dir}" ]]; then
-        printf "Repository is required to be located under %s, won't work with current location at %s\n" "${HOME}/.dotfiles" "${__script_dir}"
+        printf "Repository is required to be located under %s, won't work with current location at %s %s\n" "${HOME}/.dotfiles" "${__script_dir}" "${__job_error}"
         exit 1
     fi
 }
