@@ -23,7 +23,7 @@ set_mail() {
 set_credential_helper() {
     local git_credential="cache"
 
-    if [ $(uname --kernel-name) = "Darwin" ]; then
+    if [ $(uname -s) = "Darwin" ]; then
         git_credential="osxkeychain"
     fi
     
