@@ -4,26 +4,22 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# unicode symbols
-readonly ok_symbol="\u2705"
-readonly error_icon="\u274C"
-
 download_vundle() {
     local vundle_path="${HOME}/.vim/bundle/Vundle.vim"
     printf "Installing vundle to handle vim plugins...\n"
     if [ ! -d "$vundle_path" ] 
     then
         git clone --quiet https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-        printf "  ${ok_symbol} Download Vundle to %s\n" "${vundle_path}"
+        printf "  Download Vundle to %s\n" "${vundle_path}"
     else
-       printf "  ${ok_symbol} Vundle already installed\n"
+       printf "  Vundle already installed\n"
     fi
 }
 
 install_vim_plugins() {
     printf "Installing plugins listed in ~/.vimrc with Vundle...\n"
     vi -E +PluginInstall +qall > /dev/null
-    printf "  ${ok_symbol} vim plugins installed\n"
+    printf "  vim plugins installed\n"
 }
 
 main() {
@@ -32,5 +28,5 @@ main() {
     install_vim_plugins
 }
 
-main "${@}"
+main "$@"
 

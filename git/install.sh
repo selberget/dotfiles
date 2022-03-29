@@ -4,10 +4,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# unicode symbols
-readonly ok_symbol="\u2705"
-readonly error_symbol="\u274C"
-
 set_author() {
     local git_username
     printf "Enter git  username: "
@@ -39,7 +35,7 @@ check_requirements() {
     local git_command="git"
 
     if ! command -v "${git_command}" &> /dev/null; then
-        printf "  ${error_symbol} ${git_command} is required to be installed\n" 
+        printf "  ${git_command} is required to be installed\n" 
         printf "git won't be configured"
         exit 0 # or 1?
     fi
@@ -53,5 +49,5 @@ main() {
     set_credential_helper
 }
 
-main "${@}"
+main "$@"
 

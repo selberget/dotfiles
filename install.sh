@@ -17,22 +17,10 @@ readonly __script_name=$(basename "${0}")
 readonly __script_dir=$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 readonly __dotfiles_backup_dir="${HOME}/dotfiles.bak"
 
-# unicode symbols
-readonly __job_task_symbol="\u21AA"
-readonly __job_task_step_symbol="\u21AA"
-readonly __job_completed="\U2705"
-readonly __job_error="\U274C"
-readonly __info_message="\u2022"
-readonly __seperator="\u2501"
-
 # [Help functions]
 
 print_seperator() {
-    local length=72
-    for i in $(seq 1 "${length}"); do
-        printf "${__seperator}"
-    done
-    printf "\n"
+    printf "%s\n" "--------------------------------------------------------------------------------"
 }
 
 print_info() {
@@ -40,11 +28,11 @@ print_info() {
     printf "Info\n"
     print_seperator
     printf "Running the script will:\n"
-    printf "  ${__info_message} Install dotfiles stored under ${__script_dir} (files suffixed with '.symlink').\n"
-    printf "  ${__info_message} Create symlinks from ${HOME}/.dotfiles to where each dotfile should be stored.\n"
-    printf "  ${__info_message} Backup existing dotfiles to %s, if they exist.\n" "${__dotfiles_backup_dir}"
-    printf "  ${__info_message} Create symlinks for scripts under ${HOME}/.dotfiles/bin to ${HOME}/bin.\n"
-    printf "  ${__info_message} Run installation scripts stored under ${HOME}/.dotfiles/**/install.sh, which will:\n"
+    printf "  * Install dotfiles stored under ${__script_dir} (files suffixed with '.symlink').\n"
+    printf "  * Create symlinks from ${HOME}/.dotfiles to where each dotfile should be stored.\n"
+    printf "  * Backup existing dotfiles to %s, if they exist.\n" "${__dotfiles_backup_dir}"
+    printf "  * Create symlinks for scripts under ${HOME}/.dotfiles/bin to ${HOME}/bin.\n"
+    printf "  * Run installation scripts stored under ${HOME}/.dotfiles/**/install.sh, which will:\n"
     printf "    - install vim plugins (using Vundle)\n"
     printf "    - prompt user for git configuration\n"
     print_seperator
@@ -63,11 +51,11 @@ input_prompt() {
 check_if_home_is_set() {
     printf "Checking if \$HOME is set\n"
     if [ -z "${HOME}" ]; then
-        printf "  ${__job_task_step_symbol} You got no \$HOME ${__job_error}\n"
+        printf "  You got no \$HOME\n"
         printf "  \$HOME has to be set to your home directory for the script to be able to run properly\n"
         exit 1
     else
-        printf "   You got a \$HOME ${__job_completed}\n"
+        printf "   You got a \$HOME\n"
     fi
     print_seperator
 }
@@ -80,14 +68,14 @@ backup_dotfile() {
     printf "Backing up %s\n" "${dotfile_name}"
 
     if [ -f "${dotfile_path}" ] ; then
-        printf "  ${__job_task_step_symbol} %s exists on the system\n" "${dotfile_name}"
-        printf "  ${__job_task_step_symbol} Copying %s to %s\n" "${dotfile_name}" "${__dotfiles_backup_dir}" 
+        printf "  - %s exists on the system\n" "${dotfile_name}"
+        printf "  - Copying %s to %s\n" "${dotfile_name}" "${__dotfiles_backup_dir}" 
         cp  "${dotfile_path}" "${backup_dotfile_path}"
-        printf "  ${__job_task_step_symbol} Removing old %s from the system\n" "${dotfile_name}"
+        printf "  - Removing old %s from the system\n" "${dotfile_name}"
         rm -f "${dotfile_path}"
     else
-        printf "  ${__job_task_step_symbol} %s doesn't exist\n" "${dotfile_name}"
-        printf "  ${__job_task_step_symbol} No need to backup\n"
+        printf "  - %s doesn't exist\n" "${dotfile_name}"
+        printf "  - No need to backup\n"
     fi
 }
 
@@ -97,10 +85,10 @@ backup_backuped_dotfile() {
 
     printf "Backing up previous backup %s\n" "${filename}"    
     if [ -f "${backed_up_dotfile_path}" ]; then
-        printf "  ${__job_task_step_symbol} Copying %s to %s\n" "${backed_up_dotfile_path}" "${backed_up_dotfile_path}.bak" 
+        printf "  - Copying %s to %s\n" "${backed_up_dotfile_path}" "${backed_up_dotfile_path}.bak" 
         cp "${backed_up_dotfile_path}" "${backed_up_dotfile_path}.bak"
     else
-        printf "  ${__job_task_step_symbol} Backed up file %s doesn't exist, no need to backup\n" "${backed_up_dotfile_path}"
+        printf "  - Backed up file %s doesn't exist, no need to backup\n" "${backed_up_dotfile_path}"
     fi
 }
 
@@ -129,7 +117,7 @@ install_dotfiles() {
         create_symlink "${dotfile}" "${HOME}/${dotfile_name}"
     done
 
-    printf "\nDotfiles installed ${__job_completed}\n"
+    printf "\nDotfiles installed\n"
     print_seperator
 }
 
@@ -146,13 +134,13 @@ install_scripts() {
     printf "Following scripts will be installed:\n"
     for script in "${script_source}/*"
     do
-        printf "${__info_message} $(basename $script)\n"
+        printf "* $(basename $script)\n"
     done
 
     printf "Copying scripts from %s to %s\n" "${script_source}" "${script_destination}"
     cp -a "${script_source}/." "${script_destination}"
 
-    printf "\nScripts installed ${__job_completed}\n"
+    printf "\nScripts installed\n"
     print_seperator
 }
 
@@ -163,7 +151,7 @@ run_installation_scripts() {
         ${install_script}
     done
 
-    printf "\nInstallation scripts executed ${__job_completed}\n"
+    printf "\nInstallation scripts executed\n"
     print_seperator
 }
 
@@ -182,8 +170,8 @@ main() {
     install_dotfiles
     install_scripts
     run_installation_scripts
-    printf "Installation done ${__job_completed}\n"
+    printf "Installation done\n"
 }
 
-main "${@}"
+main "$@"
 
