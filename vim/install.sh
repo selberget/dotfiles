@@ -18,7 +18,7 @@ download_vundle() {
 
 install_vim_plugins() {
     printf "Installing plugins listed in ~/.vimrc with Vundle...\n"
-    vi -E +PluginInstall +qall > /dev/null
+    vi -E +PluginInstall +qall &> /dev/null
     printf "  vim plugins installed\n"
 }
 
