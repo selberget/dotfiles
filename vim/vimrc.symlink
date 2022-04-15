@@ -44,6 +44,8 @@ filetype plugin indent on    " required
 
 colorscheme gruvbox
 
+syntax on
+
 let mapleader = "\<Space>"
 
 " system clipboard

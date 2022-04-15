@@ -22,11 +22,11 @@ ialias() {
 }
 
 is_expandable_alias() {
-  [[ ! $LBUFFER =~ "\<(${(j:|:)ialiases})\$" ]]
+    [[ ${ialiases[(ie)$LBUFFER]} -gt ${#ialiases} ]];
 }
 
 is_blank_expandable_alias() {
-    [[ $LBUFFER =~ "\<(${(j:|:)ealiases})\$" ]]; 
+    [[ ${ealiases[(ie)$LBUFFER]} -le ${#ealiases} ]];
 }
 
 # expand expandable aliases
