@@ -1,0 +1,41 @@
+let mapleader = " "
+
+set number relativenumber
+set idearefactormode=keep
+set commentary
+set easymotion
+set surround
+
+" system clipboard
+vmap <leader>y "+y
+vmap <leader>d "+d
+nmap <leader>y "+yy
+nmap <leader>p "+p
+nmap <leader>P "+P
+vmap <leader>p "+p
+vmap <leader>P "+P
+
+" don't loose what has been previously yanked when pasting in visual mode
+vnoremap <leader>p "_dP
+
+" map enter and shift + enter for new line in normal mode
+nmap <CR> o<Esc>
+nmap <S-CR> O<Esc>
+
+" intellij actions
+map <leader>a <Action>(ShowIntentionActions)
+nmap <leader>g <Action>(Generate)
+nmap <leader>q <Action>(CloseEditor)
+nmap <leader>Q <Action>(CloseAllEditors)
+nmap <leader>e <Action>(ShowErrorDescription)
+nmap <leader>d <Action>(Debug)
+nmap <leader>b <Action>(GotoDeclaration)
+nmap <leader>j <Action>(QuickJavaDoc)
+nmap <leader>i <Action>(QuickImplementations)
+nmap \o <Action>(OptimizeImports)
+nmap \r <Action>(ReformatCode)
+nmap \b <Action>(ToggleLineBreakpoint)
+
+set NERDTree
+let g:NERDTreeMapActivateNode='l'
+let g:NERDTreeMapJumpParent='h'
