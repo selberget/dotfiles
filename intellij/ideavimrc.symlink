@@ -35,6 +35,9 @@ nmap <leader>i <Action>(QuickImplementations)
 nmap \o <Action>(OptimizeImports)
 nmap \r <Action>(ReformatCode)
 nmap \b <Action>(ToggleLineBreakpoint)
+nmap <leader>sv <Action>(MoveTabRight)
+nmap <leader>sh <Action>(MoveTabDown)
+nmap <leader>su <Action>(Unsplit)
 
 set NERDTree
 let g:NERDTreeMapActivateNode='l'
