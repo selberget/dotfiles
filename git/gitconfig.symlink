@@ -4,3 +4,5 @@
 	helper = cache
 [pull]
 	rebase = true
+[core]
+    editor = vim

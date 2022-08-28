@@ -1,0 +1,10 @@
+<templateSet group="Test">
+  <template name="test" value="@org.junit.jupiter.api.Test&#10;@org.junit.jupiter.api.DisplayName(&quot;$TEST_NAME$&quot;)&#10;void $METHOD_NAME$() {&#10;    // Arrange&#10;    $END$&#10;    // Act&#10;    &#10;    // Assert&#10;    $BODY$&#10;}" description="Template to generate Junit5 test method" toReformat="true" toShortenFQNames="true">
+    <variable name="TEST_NAME" expression="" defaultValue="&quot;Test name&quot;" alwaysStopAt="true" />
+    <variable name="METHOD_NAME" expression="groovyScript(&quot;return _1.split('(?i)should').join('_should');&quot;, camelCase(TEST_NAME))" defaultValue="&quot;methodName&quot;" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="&quot;org.junit.jupiter.api.Assertions.fail(\&quot;Not implemented\&quot;);&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+</templateSet>
